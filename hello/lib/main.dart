@@ -1,35 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
+import 'models/auth_model.dart';
 import 'screens/main_screen.dart';
 import 'screens/start_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.removeAfter(initialization);
-  await initialization(null);
-  runApp(const MyApp());
+  final isAuth = await initialization(null);
+  FlutterNativeSplash.remove();
+  runApp(MyApp(isAuth));
 }
 
-Future initialization(BuildContext? context) async {
+Future<bool> initialization(BuildContext? context) async {
+  final modelAuth = Auth();
+  await Hive.initFlutter();
   await Future.delayed(const Duration(seconds: 3));
+  return await modelAuth.getIsAuth();
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isAuth;
+  const MyApp(this.isAuth, {super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: StartScreen(),
-      routes: {
-        MainScreen.routeName: (context) => MainScreen(),
-      }
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: isAuth ? MainScreen.routeName : StartScreen.routeName,
+        routes: {
+          StartScreen.routeName: (context) => StartScreen(),
+          MainScreen.routeName: (context) => MainScreen(),
+        });
   }
 }

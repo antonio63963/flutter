@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/main_screen.dart';
+import '../models/auth_model.dart';
 
 class FormWidget extends StatefulWidget {
   const FormWidget({super.key});
@@ -10,6 +11,7 @@ class FormWidget extends StatefulWidget {
 }
 
 class _FormWidgetState extends State<FormWidget> {
+  final model = Auth();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final loginController = TextEditingController();
   final emailController = TextEditingController();
@@ -66,10 +68,11 @@ class _FormWidgetState extends State<FormWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState!.validate()) {
+                    model.setIsAuth(true);
                     Navigator.of(context).pushNamed(MainScreen.routeName);
                   }
                 },
