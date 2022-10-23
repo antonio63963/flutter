@@ -1,10 +1,10 @@
-# hello
+# hello back!
 
 A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+App initialize to define whether user was auth earlier. If it true we display main screen(MainScreen), otherwise - login screen(StartScreen). It has splash screen with 3sec. delayed. 
 
 A few resources to get you started if this is your first Flutter project:
 
